@@ -13,8 +13,14 @@ namespace API.Controllers
     [ApiController]
     public class RentController : ControllerBase
     {
+        [HttpGet]
+        public async Task<IActionResult> GetAsync([FromServices] IRentApplicationService service)
+        {
+            return Ok();
+        }
+
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody]Rent rent, [FromServices] IRentApplicationService service)
+        public async Task<IActionResult> PostAsync([FromBody] Rent rent, [FromServices] IRentApplicationService service)
         {
             return Created("", null);
         }
