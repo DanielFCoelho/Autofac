@@ -1,33 +1,42 @@
 ﻿using Domain;
 using Domain.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infra.Repositories
 {
     public class CarRepository : ICarRepository
     {
-        public Task DeleteCarAsync(Car car)
+        private readonly CarRentContext _context;
+
+        public CarRepository(CarRentContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<Car> GetCarAsync(long idCar)
+        public void DeleteCarAsync(Car car)
         {
-            throw new NotImplementedException();
+            _context.Remove(car);
         }
 
-        public Task<IQueryable<Car>> GetCarsAsync()
+        public async Task<Car> GetCarAsync(long idCar)
         {
-            throw new NotImplementedException();
+            return await _context.Cars.FindAsync( idCar);
         }
 
-        public Task SaveCarAsync(Car car)
+        public IQueryable<Car> GetCarsAsync()
         {
-            throw new NotImplementedException();
+            return _context.Cars;
+        }
+
+        public async Task SaveCarAsync(Car car)
+        {
+            await _context.AddAsync(car);
+        }
+
+        public void UpdateCarAsync(Car car)
+        {
+            _context.Update(car);
         }
     }
 }

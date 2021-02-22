@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Repositories;
 using Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,42 @@ namespace Service
 {
     public class CarApplicationService : ICarApplicationService
     {
-        public Task<Car> AddACarAsync(Car car)
+        private readonly ICarRepository _carRepository;
+
+        public CarApplicationService(ICarRepository carRepository)
         {
-            throw new NotImplementedException();
+            _carRepository = carRepository;
         }
 
-        public Task DeleteCarAsync(long idCar)
+        public async Task<Car> AddACarAsync(Car car)
         {
-            throw new NotImplementedException();
+            await car.Save();
+            return car;
         }
 
-        public Task<Car> GetCarAsync(long idCar)
+        public async Task DeleteCarAsync(long idCar)
         {
-            throw new NotImplementedException();
+            Car car = await _carRepository.GetCarAsync(idCar);
+            car.Delete();
         }
 
-        public Task<IEnumerable<Car>> GetCarsAsync()
+        public async Task<Car> GetCarAsync(long idCar)
         {
-            throw new NotImplementedException();
+            return await _carRepository.GetCarAsync(idCar);
         }
 
-        public Task<Car> UpdateCarAsync(long idCar, Car car)
+        public IEnumerable<Car> GetCarsAsync()
         {
-            throw new NotImplementedException();
+            return _carRepository.GetCarsAsync();
+        }
+
+        public async Task<Car> UpdateCarAsync(long idCar, Car car)
+        {
+            Car repositoryCar = await _carRepository.GetCarAsync(idCar);
+            repositoryCar.Update(car);
+
+            return repositoryCar;
+
         }
     }
 }

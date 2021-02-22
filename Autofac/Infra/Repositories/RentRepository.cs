@@ -1,22 +1,41 @@
 ﻿using Domain;
 using Domain.Repositories;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories
 {
     public class RentRepository : IRentRepository
     {
-        public Task DeleteRentAsync(Rent rent)
+        private readonly CarRentContext _context;
+
+        public RentRepository(CarRentContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task SaveRentAsync(Rent rent)
+        public async Task AddAsync(Rent rent)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(rent);
+        }
+
+        public void DeleteAsync(Rent rent)
+        {
+            _context.Remove(rent);
+        }
+
+        public async Task<Rent> GetByIdAsync(long rentId)
+        {
+            return await _context.Rents.Include(r => r.Car).FirstOrDefaultAsync(r => r.Id == rentId);
+        }
+
+        public void Update(Rent rent)
+        {
+            _context.Update(rent);
         }
     }
 }

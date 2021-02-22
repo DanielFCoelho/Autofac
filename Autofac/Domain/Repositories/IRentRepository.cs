@@ -7,7 +7,9 @@ namespace Domain.Repositories
 {
     public interface IRentRepository
     {
-        Task SaveRentAsync(Rent rent);
-        Task DeleteRentAsync(Rent rent);
+        Task AddAsync(Rent rent);
+        Task<Rent> GetByIdAsync(long rentId);
+        void DeleteAsync(Rent rent);
+        void Update(Rent rent);
     }
 }

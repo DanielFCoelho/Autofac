@@ -8,7 +8,7 @@ namespace Domain.Services
     public interface ICarApplicationService
     {
         Task<Car> AddACarAsync(Car car);
-        Task<IEnumerable<Car>> GetCarsAsync();
+        IEnumerable<Car> GetCarsAsync();
         Task<Car> GetCarAsync(long idCar);
         Task<Car> UpdateCarAsync(long idCar, Car car);
         Task DeleteCarAsync(long idCar);
